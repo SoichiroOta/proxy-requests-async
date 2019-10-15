@@ -15,9 +15,15 @@ class ProxyRequestsAsync:
 
     @classmethod
     async def create(cls, url):
-        self = ProxyRequestsAsync(url)
-        await self.__acquire_sockets()
-        return self
+       self = ProxyRequestsAsync()
+       self.sockets = []
+       self.url = url
+       self.request, self.proxy = '', ''
+       self.proxy_used, self.raw_content = '', ''
+       self.status_code, self.try_count = 0, 15
+       self.headers, self.file_dict = {}, {}
+       await self.__acquire_sockets()
+       return self
 
     # get a list of sockets from sslproxies.org
     async def __acquire_sockets(self):
